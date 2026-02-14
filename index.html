@@ -837,7 +837,7 @@
     <div class="floating-hearts" id="floatingHeartsContainer"></div>
 
     <!-- Background Music -->
-    <audio id="sunshineAudio" preload="none">
+    <audio id="sunshineAudio" preload="auto" crossorigin="anonymous">
         <source src="christina_perri_-_you_are_my_sunshine_daycore_(mp3.pm).mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -982,6 +982,10 @@
         // Audio control functions
         function playBackgroundMusic() {
             const audio = document.getElementById('sunshineAudio');
+            console.log('Attempting to play audio...');
+            console.log('Audio element:', audio);
+            console.log('Audio src:', audio.src);
+
             audio.volume = 0.3; // Moderate default volume
 
             const playPromise = audio.play();
@@ -990,11 +994,12 @@
                 playPromise
                     .then(() => {
                         // Auto-play succeeded
+                        console.log('Audio playing successfully');
                         updateAudioUIState(true);
                     })
                     .catch(error => {
                         // Auto-play prevented or failed
-                        console.log('Auto-play prevented:', error);
+                        console.log('Auto-play prevented or failed:', error);
                         showAudioFallback();
                     });
             }
@@ -1118,6 +1123,26 @@
         // Start floating hearts immediately
         setInterval(createFloatingHearts, 5000);
         createFloatingHearts();
+
+        // Audio error handling
+        const audioElement = document.getElementById('sunshineAudio');
+        audioElement.addEventListener('error', function(e) {
+            console.error('Audio loading error:', e);
+            console.error('Audio error code:', audioElement.error?.code);
+            console.error('Audio error message:', audioElement.error?.message);
+        });
+
+        audioElement.addEventListener('canplay', function() {
+            console.log('Audio can play');
+        });
+
+        audioElement.addEventListener('canplaythrough', function() {
+            console.log('Audio can play through');
+        });
+
+        audioElement.addEventListener('loadstart', function() {
+            console.log('Audio loading started');
+        });
     </script>
 </body>
 </html>
