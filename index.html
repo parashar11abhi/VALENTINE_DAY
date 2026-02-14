@@ -175,6 +175,17 @@
             transform: translateY(0);
         }
 
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
         /* MAIN CONTENT */
         .main-container {
             display: none;
@@ -268,24 +279,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .photo-card:hover {
-            transform: translateY(-10px);
         }
 
         .photo-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-
-        .photo-placeholder {
-            font-size: 60px;
-            color: white;
-            text-align: center;
         }
 
         .photo-label {
@@ -374,10 +373,6 @@
             transform: translateY(-2px);
         }
 
-        .file-input {
-            display: none;
-        }
-
         @media (max-width: 600px) {
             .header {
                 flex-direction: column;
@@ -426,6 +421,10 @@
         <button class="login-btn" id="loginBtn" onclick="handleLogin()">
             <span id="loginBtnText">Unlock My Message ❤️</span>
         </button>
+
+        <div class="error-message" id="errorMessage">
+            ❌ Access denied! Only Sumita or Abhishek can view this.
+        </div>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -443,15 +442,13 @@
 
         <div class="content">
             <div class="photos-section">
-                <div class="photo-card" onclick="uploadPhoto(0)">
-                    <img id="photo0" style="display: none;" />
-                    <div id="placeholder0" class="photo-placeholder">📷</div>
-                    <div class="photo-label" id="photoLabel0">Your Beautiful Face</div>
+                <div class="photo-card">
+                    <img src="1000104991.png" alt="Your Beautiful Face" />
+                    <div class="photo-label">Your Beautiful Face</div>
                 </div>
-                <div class="photo-card" onclick="uploadPhoto(1)">
-                    <img id="photo1" style="display: none;" />
-                    <div id="placeholder1" class="photo-placeholder">💑</div>
-                    <div class="photo-label" id="photoLabel1">Us Together</div>
+                <div class="photo-card">
+                    <img src="1000113761.jpg" alt="Us Together" />
+                    <div class="photo-label">Us Together</div>
                 </div>
             </div>
 
@@ -486,12 +483,11 @@
         </div>
     </div>
 
-    <input type="file" id="fileInput" class="file-input" accept="image/*" />
-
     <script>
         let currentLanguage = 'bengali';
-        let loginAttempted = false;
-        let photoIndex = -1;
+
+        // Valid usernames
+        const VALID_NAMES = ['sumita', 'abhishek'];
 
         // Create normal floating hearts
         function createFloatingHearts() {
@@ -540,15 +536,31 @@
             }
         }
 
+        function isValidName(name) {
+            const trimmedName = name.trim().toLowerCase();
+            const words = trimmedName.split(/\s+/).filter(word => word.length > 0);
+
+            // Check if all words in the input are valid names
+            return words.length > 0 && words.every(word => VALID_NAMES.includes(word));
+        }
+
         function handleLogin() {
             const nameInput = document.getElementById('nameInput').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
 
             if (!nameInput) {
-                alert('Please enter your name!');
+                errorMessage.textContent = '❌ Please enter your name!';
+                errorMessage.classList.add('show');
                 return;
             }
 
-            loginAttempted = true;
+            if (!isValidName(nameInput)) {
+                errorMessage.classList.add('show');
+                return;
+            }
+
+            // Valid login
+            errorMessage.classList.remove('show');
             createHeartExplosion();
 
             setTimeout(() => {
@@ -565,7 +577,7 @@
             document.getElementById('loginContainer').style.display = 'block';
             document.getElementById('mainContainer').classList.remove('show');
             document.getElementById('nameInput').value = '';
-            loginAttempted = false;
+            document.getElementById('errorMessage').classList.remove('show');
         }
 
         function toggleLanguage(lang) {
@@ -585,27 +597,6 @@
                 document.getElementById('bengaliMsg').classList.remove('show');
             }
         }
-
-        function uploadPhoto(index) {
-            photoIndex = index;
-            document.getElementById('fileInput').click();
-        }
-
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const photoImg = document.getElementById('photo' + photoIndex);
-                    const placeholder = document.getElementById('placeholder' + photoIndex);
-
-                    photoImg.src = event.target.result;
-                    photoImg.style.display = 'block';
-                    placeholder.style.display = 'none';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
 
         // Allow Enter key to login
         document.getElementById('nameInput').addEventListener('keypress', function(e) {
