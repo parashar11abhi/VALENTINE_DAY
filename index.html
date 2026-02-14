@@ -728,7 +728,8 @@
             top: 20px;
             right: 20px;
             z-index: 1000;
-            display: none;
+            display: block;
+            animation: slideIn 0.5s ease-out;
         }
 
         .audio-control.show {
@@ -1060,7 +1061,6 @@
             setTimeout(() => {
                 document.getElementById('loginContainer').style.display = 'none';
                 document.getElementById('mainContainer').classList.add('show');
-                document.getElementById('audioControl').classList.add('show'); // Show audio control
 
                 // Start normal floating hearts after login
                 setInterval(createFloatingHearts, 5000);
@@ -1071,7 +1071,6 @@
         function handleLogout() {
             document.getElementById('loginContainer').style.display = 'block';
             document.getElementById('mainContainer').classList.remove('show');
-            document.getElementById('audioControl').classList.remove('show'); // Hide audio control
             document.getElementById('nameInput').value = '';
             document.getElementById('errorMessage').classList.remove('show');
 
