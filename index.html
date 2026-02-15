@@ -648,6 +648,76 @@
             }
         }
 
+        .quote-section {
+            margin: 40px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            animation: cardBreathe 4s ease-in-out infinite;
+        }
+
+        .bengali-quote {
+            font-size: 22px;
+            color: #764ba2;
+            line-height: 1.9;
+            font-weight: 500;
+            animation: fadeInText 2s ease-out 0.3s both, textGlow 3s ease-in-out 1s infinite;
+            display: none;
+            font-family: 'Lora', serif;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding-left: 20px;
+            text-align: center;
+        }
+
+        .bengali-quote::before {
+            content: '"';
+            position: absolute;
+            left: 0;
+            top: -15px;
+            font-size: 60px;
+            color: rgba(255, 215, 0, 0.3);
+            font-family: 'Playfair Display', serif;
+            line-height: 0.5;
+            animation: quoteMark 1.5s ease-out 0.5s both;
+        }
+
+        .bengali-quote.show {
+            display: block;
+        }
+
+        .english-quote {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.9;
+            font-style: italic;
+            animation: fadeInText 2s ease-out 0.3s both, textGlow 3s ease-in-out 1s infinite;
+            display: none;
+            font-family: 'Lora', serif;
+            letter-spacing: 0.3px;
+            position: relative;
+            padding-left: 20px;
+            text-align: center;
+        }
+
+        .english-quote::before {
+            content: '"';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: -15px;
+            font-size: 60px;
+            color: rgba(255, 215, 0, 0.3);
+            font-family: 'Playfair Display', serif;
+            line-height: 0.5;
+            animation: quoteMark 1.5s ease-out 0.5s both;
+        }
+
+        .english-quote.show {
+            display: block;
+        }
+
         .signature {
             text-align: center;
             font-size: 28px;
@@ -913,6 +983,18 @@
 
             <div class="divider"></div>
 
+            <div class="quote-section">
+                <div class="bengali-quote show" id="bengaliQuote">
+                    যেদিন আমরা একে অপরের সাথে কথা বলতে শুরু করেছিলাম; আমি অবাক হই যদি তারা আমাদের দিকে তাকিয়ে ভেবেছিল<br>'অবশেষে তারা একত্রিত হয়েছে'
+                </div>
+
+                <div class="english-quote" id="englishQuote">
+                    the day we started talking to each other; i wonder if the stars looked down at us and thought<br>'They finally met'
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
             <div class="signature" id="signature">Forever Yours ❤️</div>
 
             <button class="logout-btn" id="logoutBtn" onclick="handleLogout()">Logout</button>
@@ -1092,10 +1174,14 @@
                 document.getElementById('bengaliBtn').classList.add('active');
                 document.getElementById('bengaliMsg').classList.add('show');
                 document.getElementById('englishMsg').classList.remove('show');
+                document.getElementById('bengaliQuote').classList.add('show');
+                document.getElementById('englishQuote').classList.remove('show');
             } else {
                 document.getElementById('englishBtn').classList.add('active');
                 document.getElementById('englishMsg').classList.add('show');
                 document.getElementById('bengaliMsg').classList.remove('show');
+                document.getElementById('englishQuote').classList.add('show');
+                document.getElementById('bengaliQuote').classList.remove('show');
             }
         }
 
